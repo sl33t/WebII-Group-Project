@@ -1,0 +1,51 @@
+{% extends "main_layout.html" %}
+
+{% load staticfiles %}
+
+{% block title %}
+IrregEx: Lessons
+{% endblock %}
+
+{% block content %}
+<div class="body-div row">
+    <nav id="local-nav" class="navbar navbar-default col-sm-3 col-md-2">
+        <button type="button" id="local-button" class="nav-button navbar-toggle" data-toggle="collapse"
+                data-target="#localNav">
+            <span>Show Lessons</span>
+        </button>
+        <div class="localNav collapse navbar-collapse" id="localNav">
+            <ul class="localNav nav navbar-nav">
+                {% for each_lesson in lessons %}
+                {% if each_lesson.lesson_number = lesson.lesson_number %}
+                <li class="selected">
+                    <a id="selected" href="/lessons/{{ each_lesson.lesson_number }}/">
+                        <div class="localNavTitle">{{ each_lesson.title }}</div>
+                        <p class="localNavDescription">{{ each_lesson.description }}</p>
+                    </a>
+                </li>
+                {% else %}
+                <li class="not-selected">
+                    <a href="/lessons/{{ each_lesson.lesson_number }}/">
+                        <div class="localNavTitle">{{ each_lesson.title }}</div>
+                        <p class="localNavDescription">{{ each_lesson.description }}</p>
+                    </a>
+                </li>
+                {% endif %}
+                {% endfor %}
+            </ul>
+        </div>
+    </nav>
+    <div class="lesson content-box col-xs-12 col-sm-9 col-md-10">
+        <h2 id="{{ lesson.lesson_number }}">{{ lesson.title }}</h2>
+        {% if lesson.video %}
+        <div class="videoFrame">
+            <iframe width="100%" height="100%" src="{{ lesson.video }}" frameborder="0" allowfullscreen></iframe>
+        </div>
+        {% endif %}
+        {% load markup_tags %}
+        {{ lesson.text|apply_markup:"markdown" }}
+
+        <a class="takeQuiz btn btn-sign col-xs-12 col-sm-4 col-md-3" href="/quiz/{{ lesson.quiz.id }}">Take Quiz</a>
+    </div>
+</div>
+{% endblock %}

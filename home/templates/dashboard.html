@@ -1,0 +1,65 @@
+{% extends "main_layout.html" %}
+
+{% load staticfiles %}
+
+{% block title %}
+IrregEx: Dashboard
+{% endblock %}
+
+{% block content %}
+<div class="dashboard">
+    <div class="col-xs-12 col-md-6">
+        <div class="material-box">
+            <h2>{% if next %}
+                {{next.title}}</h2>
+            <a class="btn btn-success" href="/lessons/{{next.lesson_number}}"/>
+            Continue Lesson &rsaquo;
+            </a>
+            {% else %}
+            You are done!</h2>
+            {% endif %}
+            <div class="progress">
+                <div class="progress-bar" role="progressbar" aria-valuenow="{{completion_percentage}}"
+                     aria-valuemin="0" aria-valuemax="100" style="width:{{completion_percentage}}%">
+                    {{completion_percentage}}% Complete
+                </div>
+            </div>
+        </div>
+    </div>
+
+<div class="col-xs-12 col-md-6">
+    <div class="material-box">
+        <h2>Badges</h2>
+        {% if profile.badges %}
+            {% for badge in profile.badges.all %}
+                <div class="col-xs-6 col-sm-3 col-md-2  irregex-badge">
+                    <img src="{{ badge.picture.url }}" alt="{{ badge.name }}">
+                    <p>{{ badge.description }}</p>
+                </div>
+            {% endfor %}
+        {% else %}
+            <p>You have no badges yet</p>
+        {% endif %}
+    </div>
+</div>
+
+<div class="col-xs-12">
+    <div class="material-box">
+        <h2>Forum Posts</h2>
+        {% if profile.posts %}
+            {% for post in profile.posts.all %}
+                <div class="col-xs-12 col-md-6">
+                    <h2>{{post.title}}</h2>
+                    <p>Submitted: {{post.date}}</p>
+                    <p>{{ post.text }}</p>
+                    <p>Submitted by: {{post.user.username}}</p>
+                    <a href="/forum/post/{{post.pk}}/">View More</a>
+                </div>
+            {% endfor %}
+        {% else %}
+            <p>You have no posts yet</p>
+        {% endif %}
+    </div>
+</div>
+
+{% endblock %}
