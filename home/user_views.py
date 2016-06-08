@@ -44,7 +44,7 @@ def register_view(request):
         #         return redirect(request.META['HTTP_REFERER'])
         #     return redirect("/")
         # else:
-        messages.error("There has been an issue with your registration please try again.")
+        messages.add_message(request, messages.ERROR, "There has been an issue with your registration please try again.")
         return redirect(request.META['HTTP_REFERER'])
     else:
         return render(request, "form.html", {
